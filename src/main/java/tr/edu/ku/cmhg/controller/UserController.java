@@ -24,7 +24,7 @@ public class UserController {
 
     @PostMapping("/user/register")
     public ResponseEntity<UserResponse> registerUser(@RequestBody UserDto userDto) {
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/register").toUriString());
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v2/user/register").toUriString());
         return ResponseEntity.created(uri).body(userService.saveUser(userDto));
     }
 
