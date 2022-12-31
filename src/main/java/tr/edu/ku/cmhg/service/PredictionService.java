@@ -23,9 +23,8 @@ public class PredictionService {
         log.info("Trying to obtaining prediction for the {}", predictionDto.toString());
 
         User user = new AuthenticatedUser(userRepository).getAuthenticatedUser();
-        Double predeterminedEpsilon = 0.5;
 
-        if (user.getEpsilonValue() < predeterminedEpsilon) {
+        if (user.getEpsilonValue() < predictionDto.getEpsilon()) {
             log.error("User {}, does not have sufficient epsilon to perform this operation.", user.getEpsilonValue());
             return null;
         }
@@ -41,7 +40,7 @@ public class PredictionService {
         ResponseEntity<PredictionResponse> response = restTemplate.exchange("http://localhost:5000/predict", HttpMethod.POST, entity, PredictionResponse.class);
         log.info("Received response from the internal endpoint.");
 
-        user.setEpsilonValue(user.getEpsilonValue() - predeterminedEpsilon);
+        user.setEpsilonValue(user.getEpsilonValue() - predictionDto.getEpsilon());
 
         return ResponseEntity.ok().body(response.getBody());
     }

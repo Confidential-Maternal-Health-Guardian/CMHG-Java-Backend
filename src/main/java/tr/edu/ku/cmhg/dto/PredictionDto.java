@@ -12,4 +12,6 @@ public class PredictionDto {
     private Double bs;
     private Integer bodyTemp;
     private Integer heartRate;
+    private String modelType;
+    private Double epsilon;
 }
