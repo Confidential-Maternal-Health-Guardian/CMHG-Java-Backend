@@ -18,6 +18,8 @@ import tr.edu.ku.cmhg.entity.Role;
 import tr.edu.ku.cmhg.entity.User;
 import tr.edu.ku.cmhg.repository.RoleRepository;
 import tr.edu.ku.cmhg.repository.UserRepository;
+import tr.edu.ku.cmhg.response.RoleResponse;
+import tr.edu.ku.cmhg.response.UserResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -56,34 +58,27 @@ public class UserService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
     }
 
-    public User saveUser(User user) {
+    public UserResponse saveUser(User user) {
         log.info("Saving user {} to the database.", user.getUsername());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         Role role = roleRepository.findByName("ROLE_USER");
         user.setRoles(List.of(role));
-        return userRepository.save(user);
+
+        User u = userRepository.save(user);
+
+        return UserResponse.builder().username(u.getUsername()).epsilonValue(u.getEpsilonValue()).build();
     }
 
-    public Role saveRole(Role role) {
+    public RoleResponse saveRole(Role role) {
         log.info("Saving role {} to the database.", role.getName());
-        return roleRepository.save(role);
-    }
+        Role r = roleRepository.save(role);
 
-    public void addRoleToUser(String username, String roleName) {
-        log.info("Adding role {} to user {}.", username, roleName);
-        User user = userRepository.findByUsername(username);
-        Role role = roleRepository.findByName(roleName);
-        user.getRoles().add(role);
+        return RoleResponse.builder().name(r.getName()).build();
     }
 
     public User getUser(String username) {
         log.info("Getting user {}.", username);
         return userRepository.findByUsername(username);
-    }
-
-    public List<User> getUsers() {
-        log.info("Getting all users.");
-        return userRepository.findAll();
     }
 
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {

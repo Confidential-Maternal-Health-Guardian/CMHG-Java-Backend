@@ -1,10 +1,16 @@
 package tr.edu.ku.cmhg;
 
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import tr.edu.ku.cmhg.entity.Role;
+import tr.edu.ku.cmhg.entity.User;
+import tr.edu.ku.cmhg.service.UserService;
+
+import java.util.ArrayList;
 
 @SpringBootApplication
 public class CmhgApplication {
@@ -17,4 +23,21 @@ public class CmhgApplication {
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+//    @Bean
+//    CommandLineRunner run(UserService userService) {
+//        return args -> {
+//            userService.saveRole(new Role(null, "ROLE_USER"));
+//
+//            userService.saveUser(new User(null, "kaan", "kaan", 2.0, new ArrayList<>()));
+//            userService.saveUser(new User(null, "can", "can", 2.0, new ArrayList<>()));
+//            userService.saveUser(new User(null, "berke", "berke", 2.0, new ArrayList<>()));
+//            userService.saveUser(new User(null, "eren", "eren", 2.0, new ArrayList<>()));
+//
+//            userService.addRoleToUser("kaan", "ROLE_USER");
+//            userService.addRoleToUser("can", "ROLE_USER");
+//            userService.addRoleToUser("berke", "ROLE_USER");
+//            userService.addRoleToUser("eren", "ROLE_USER");
+//        };
+//    }
 }

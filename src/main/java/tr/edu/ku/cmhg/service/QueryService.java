@@ -2,13 +2,14 @@ package tr.edu.ku.cmhg.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.math3.distribution.LaplaceDistribution;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tr.edu.ku.cmhg.dto.QueryDto;
 import tr.edu.ku.cmhg.entity.User;
 import tr.edu.ku.cmhg.repository.DatasetRepository;
 import tr.edu.ku.cmhg.repository.UserRepository;
+import tr.edu.ku.cmhg.util.AuthenticatedUser;
+import tr.edu.ku.cmhg.util.LaplaceNoise;
 
 @Service
 @RequiredArgsConstructor
@@ -69,22 +70,21 @@ public class QueryService {
     }
 
     public Double getNoisyResult(QueryDto queryDto) {
-        User user = userRepository.findByUsername(queryDto.getUsername());
+        User user = new AuthenticatedUser(userRepository).getAuthenticatedUser();
+
+        Double rawResult = applyAggregateFunction(queryDto.getFunction(), queryDto.getField());
 
         if (user.getEpsilonValue() < queryDto.getEpsilon()) {
+            log.error("User {}, does not have sufficient epsilon to perform this operation.", user.getEpsilonValue());
             return null;
         }
 
         user.setEpsilonValue(user.getEpsilonValue() - queryDto.getEpsilon());
 
-        Double rawResult = applyAggregateFunction(queryDto.getFunction(), queryDto.getField());
-        double mean = 0.0;
-        double sensitivity = 1.0;
+        Double laplaceNoise = new LaplaceNoise().getLaplaceNoise(1.0, queryDto.getEpsilon());
 
-        double b = sensitivity / queryDto.getEpsilon();
+        log.info("Calculated result of the query with real answer: {} and laplace noise: {}", rawResult, laplaceNoise);
 
-        LaplaceDistribution laplace = new LaplaceDistribution(mean, b);
-
-        return rawResult + laplace.sample();
+        return rawResult + laplaceNoise;
     }
 }
