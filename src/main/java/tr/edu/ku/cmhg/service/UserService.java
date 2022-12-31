@@ -19,7 +19,6 @@ import tr.edu.ku.cmhg.entity.Role;
 import tr.edu.ku.cmhg.entity.User;
 import tr.edu.ku.cmhg.repository.RoleRepository;
 import tr.edu.ku.cmhg.repository.UserRepository;
-import tr.edu.ku.cmhg.response.RoleResponse;
 import tr.edu.ku.cmhg.response.UserResponse;
 
 import javax.servlet.http.HttpServletRequest;

@@ -5,9 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tr.edu.ku.cmhg.dto.UserDto;
-import tr.edu.ku.cmhg.entity.Role;
-import tr.edu.ku.cmhg.entity.User;
-import tr.edu.ku.cmhg.response.RoleResponse;
 import tr.edu.ku.cmhg.response.UserResponse;
 import tr.edu.ku.cmhg.service.UserService;
 

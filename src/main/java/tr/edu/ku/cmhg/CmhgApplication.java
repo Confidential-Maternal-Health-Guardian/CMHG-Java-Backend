@@ -1,16 +1,10 @@
 package tr.edu.ku.cmhg;
 
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import tr.edu.ku.cmhg.entity.Role;
-import tr.edu.ku.cmhg.entity.User;
-import tr.edu.ku.cmhg.service.UserService;
-
-import java.util.ArrayList;
 
 @SpringBootApplication
 public class CmhgApplication {

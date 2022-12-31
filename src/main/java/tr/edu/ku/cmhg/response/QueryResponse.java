@@ -6,5 +6,5 @@ import lombok.Data;
 @Data
 @Builder
 public class QueryResponse {
-    private Double response;
+    private Double queryResult;
 }
