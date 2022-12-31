@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tr.edu.ku.cmhg.dto.UserDto;
 import tr.edu.ku.cmhg.entity.Role;
 import tr.edu.ku.cmhg.entity.User;
 import tr.edu.ku.cmhg.repository.RoleRepository;
@@ -58,22 +59,17 @@ public class UserService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
     }
 
-    public UserResponse saveUser(User user) {
-        log.info("Saving user {} to the database.", user.getUsername());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+    public UserResponse saveUser(UserDto userDto) {
+        log.info("Saving user {} to the database.", userDto.getUsername());
+
+        User user = new User(null, userDto.getUsername(), null, 2.0, null);
         Role role = roleRepository.findByName("ROLE_USER");
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setRoles(List.of(role));
 
         User u = userRepository.save(user);
 
         return UserResponse.builder().username(u.getUsername()).epsilonValue(u.getEpsilonValue()).build();
-    }
-
-    public RoleResponse saveRole(Role role) {
-        log.info("Saving role {} to the database.", role.getName());
-        Role r = roleRepository.save(role);
-
-        return RoleResponse.builder().name(r.getName()).build();
     }
 
     public User getUser(String username) {

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import tr.edu.ku.cmhg.dto.UserDto;
 import tr.edu.ku.cmhg.entity.Role;
 import tr.edu.ku.cmhg.entity.User;
 import tr.edu.ku.cmhg.response.RoleResponse;
@@ -22,15 +23,9 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/user/register")
-    public ResponseEntity<UserResponse> registerUser(@RequestBody User user) {
+    public ResponseEntity<UserResponse> registerUser(@RequestBody UserDto userDto) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/register").toUriString());
-        return ResponseEntity.created(uri).body(userService.saveUser(user));
-    }
-
-    @PostMapping("/role/create")
-    public ResponseEntity<RoleResponse> createRole(@RequestBody Role role) {
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/role/create").toUriString());
-        return ResponseEntity.created(uri).body(userService.saveRole(role));
+        return ResponseEntity.created(uri).body(userService.saveUser(userDto));
     }
 
     @GetMapping("/token/refresh")

@@ -5,8 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class QueryDto {
-    private String function;
-    private String field;
-    private Double epsilon;
+public class UserDto {
+    private String username;
+    private String password;
 }
