@@ -61,6 +61,12 @@ public class UserService implements UserDetailsService {
     public UserResponse saveUser(UserDto userDto) {
         log.info("Saving user {} to the database.", userDto.getUsername());
 
+        User checkIfExist = userRepository.findByUsername(userDto.getUsername());
+
+        if (checkIfExist != null) {
+            return null;
+        }
+
         User user = new User(null, userDto.getUsername(), null, 2.0, null);
         Role role = roleRepository.findByName("ROLE_USER");
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));

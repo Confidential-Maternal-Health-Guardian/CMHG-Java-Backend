@@ -20,9 +20,13 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/user/register")
-    public ResponseEntity<UserResponse> registerUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<?> registerUser(@RequestBody UserDto userDto) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v2/user/register").toUriString());
-        return ResponseEntity.created(uri).body(userService.saveUser(userDto));
+        UserResponse userResponse = userService.saveUser(userDto);
+
+        if (userResponse != null) return ResponseEntity.created(uri).body(userService.saveUser(userDto));
+
+        return ResponseEntity.badRequest().build();
     }
 
     @GetMapping("/token/refresh")
