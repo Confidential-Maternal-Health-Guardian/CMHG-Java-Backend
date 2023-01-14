@@ -24,7 +24,7 @@ public class UserController {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v2/user/register").toUriString());
         UserResponse userResponse = userService.saveUser(userDto);
 
-        if (userResponse != null) return ResponseEntity.created(uri).body(userService.saveUser(userDto));
+        if (userResponse != null) return ResponseEntity.created(uri).body(userResponse);
 
         return ResponseEntity.badRequest().build();
     }
