@@ -2,6 +2,7 @@ package tr.edu.ku.cmhg.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,9 @@ import tr.edu.ku.cmhg.util.AuthenticatedUser;
 @Transactional
 public class PredictionService {
     private final UserRepository userRepository;
+
+    @Value("${PREDICTION_URL}")
+    private String predictionUrl;
 
     public ResponseEntity<PredictionResponse> getPrediction(PredictionDto predictionDto) {
         log.info("Trying to obtaining prediction for the {}", predictionDto.toString());
@@ -37,7 +41,7 @@ public class PredictionService {
         RestTemplate restTemplate = new RestTemplate();
 
         log.info("Sending request to the internal endpoint.");
-        ResponseEntity<PredictionResponse> response = restTemplate.exchange("http://localhost:5001/predict", HttpMethod.POST, entity, PredictionResponse.class);
+        ResponseEntity<PredictionResponse> response = restTemplate.exchange(predictionUrl, HttpMethod.POST, entity, PredictionResponse.class);
         log.info("Received response from the internal endpoint.");
 
         user.setEpsilonValue(user.getEpsilonValue() - predictionDto.getEpsilon());
