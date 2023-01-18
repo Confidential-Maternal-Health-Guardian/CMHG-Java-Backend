@@ -37,7 +37,7 @@ public class PredictionService {
         RestTemplate restTemplate = new RestTemplate();
 
         log.info("Sending request to the internal endpoint.");
-        ResponseEntity<PredictionResponse> response = restTemplate.exchange("http://localhost:5000/predict", HttpMethod.POST, entity, PredictionResponse.class);
+        ResponseEntity<PredictionResponse> response = restTemplate.exchange("http://localhost:5001/predict", HttpMethod.POST, entity, PredictionResponse.class);
         log.info("Received response from the internal endpoint.");
 
         user.setEpsilonValue(user.getEpsilonValue() - predictionDto.getEpsilon());
